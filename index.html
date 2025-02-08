@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Calculator - India</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-content">
+            <div class="logo">
+                <i class="fas fa-calculator"></i>
+                <span>Tax Calculator</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link active">Calculator</a>
+                <a href="settings.html" class="nav-link">Settings</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <div class="current-fy">
+                <i class="fas fa-calendar-alt"></i>
+                <span>FY <span id="currentFY" data-fy-display></span></span>
+            </div>
+            <div class="progress-tracker">
+                <div class="progress-step active" data-step="income">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span>Income Details</span>
+                </div>
+                <div class="progress-step" data-step="deductions">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <span>Deductions</span>
+                </div>
+                <div class="progress-step" data-step="exemptions">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Exemptions</span>
+                </div>
+                <div class="progress-step" data-step="calculation">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Tax Calculation</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="content">
+            <div class="settings-info">
+                <span class="helper-text">
+                    <i class="fas fa-info-circle"></i>
+                    Using tax rates last updated: <span id="lastUpdated">Default</span>
+                    <a href="settings.html" class="settings-link">
+                        <i class="fas fa-cog"></i> Update Settings
+                    </a>
+                </span>
+            </div>
+
+            <form id="taxForm" class="tax-form">
+                <!-- Income Section -->
+                <section class="form-section" id="incomeSection">
+                    <div class="section-header">
+                        <h2><i class="fas fa-money-bill-wave"></i> Income Details</h2>
+                        <span class="helper-text">Enter your income details for FY <span id="selectedFY" data-fy-display></span></span>
+                    </div>
+
+                    <div class="card-grid">
+                        <div class="input-card">
+                            <h3>Salary Components</h3>
+                            <div class="input-group">
+                                <label for="basicSalary">Basic Pay</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="basicSalary" name="basicSalary" 
+                                           placeholder="Monthly basic pay">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="splPay">SPL Pay/PP</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="splPay" name="splPay" 
+                                           placeholder="Special Pay/Personal Pay">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="da">Dearness Allowance (DA)</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="da" name="da" 
+                                           placeholder="Monthly DA">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="ahra">Additional HRA (AHRA)</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="ahra" name="ahra" 
+                                           placeholder="Additional HRA">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="sca">Special Compensatory Allowance (SCA)</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="sca" name="sca" 
+                                           placeholder="SCA">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-card">
+                            <h3>Allowances</h3>
+                            <div class="input-group">
+                                <label for="hra">House Rent Allowance (HRA)</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="hra" name="hra" 
+                                           placeholder="Monthly HRA">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="telIncr">Telephone Increment</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="telIncr" name="telIncr" 
+                                           placeholder="Telephone Increment">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="cca">City Compensatory Allowance (CCA)</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="cca" name="cca" 
+                                           placeholder="CCA">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="pha">Personal Housing Allowance (PHA)</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="pha" name="pha" 
+                                           placeholder="PHA">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-card">
+                            <h3>HRA Details</h3>
+                            <div class="input-group">
+                                <label for="gpf">GPF</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="gpf" name="gpf" 
+                                           placeholder="GPF">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="tsgli">TSGLI</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="tsgli" name="tsgli" 
+                                           placeholder="TSGLI">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="gis">GIS</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="gis" name="gis" 
+                                           placeholder="GIS">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="pTax">Professional Tax</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="pTax" name="pTax" 
+                                           placeholder="Professional Tax">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Deductions Section -->
+                <section class="form-section hidden" id="deductionsSection">
+                    <div class="section-header">
+                        <h2><i class="fas fa-hand-holding-usd"></i> Deductions</h2>
+                        <span class="helper-text">Enter your eligible deductions under various sections</span>
+                    </div>
+
+                    <div class="card-grid">
+                        <div class="input-card">
+                            <h3>Section 80C (Max ₹1.5L)</h3>
+                            <div class="input-group">
+                                <label for="ppf">PPF Investment</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="ppf" name="ppf" 
+                                           placeholder="Public Provident Fund">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="epf">EPF Contribution</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="epf" name="epf" 
+                                           placeholder="Employee Provident Fund">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="elss">ELSS Investment</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="elss" name="elss" 
+                                           placeholder="Equity Linked Savings Scheme">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="homeLoanPrincipal">Home Loan Principal</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="homeLoanPrincipal" name="homeLoanPrincipal" 
+                                           placeholder="Principal repayment">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-card">
+                            <h3>Section 80D - Health Insurance</h3>
+                            <div class="input-group">
+                                <label for="selfHealth">Self & Family Premium</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="selfHealth" name="selfHealth" 
+                                           placeholder="Max ₹25,000">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="parentHealth">Parents Premium</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="parentHealth" name="parentHealth" 
+                                           placeholder="Max ₹50,000 for senior citizens">
+                                </div>
+                            </div>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="parentsSenior" name="parentsSenior">
+                                    Parents are Senior Citizens
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="input-card">
+                            <h3>Home Loan Interest</h3>
+                            <div class="input-group">
+                                <label for="homeLoanInterest">Section 24(b)</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="homeLoanInterest" name="homeLoanInterest" 
+                                           placeholder="Interest paid (Max ₹2L)">
+                                </div>
+                            </div>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="isLetOut" name="isLetOut">
+                                    Property is Let Out
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="input-card">
+                            <h3>Deductions</h3>
+                            <div class="input-group">
+                                <label for="swf">SWF/EWF</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="swf" name="swf" 
+                                           placeholder="SWF/EWF amount">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="cmrf">CMRF/MF</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="cmrf" name="cmrf" 
+                                           placeholder="CMRF/MF amount">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="greenFund">Green Fund</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="greenFund" name="greenFund" 
+                                           placeholder="Green Fund amount">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="advTax">Advance Tax</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="advTax" name="advTax" 
+                                           placeholder="Annual advance tax">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Add this section after deductionsSection -->
+                <section class="form-section hidden" id="exemptionsSection">
+                    <div class="section-header">
+                        <h2><i class="fas fa-shield-alt"></i> Exemptions</h2>
+                        <span class="helper-text">Enter your eligible exemptions</span>
+                    </div>
+                    <!-- Add your exemptions form fields here -->
+                    <div class="card-grid">
+                        <div class="input-card">
+                            <h3>House Rent Allowance (HRA)</h3>
+                            <!-- HRA fields are already in income section, can be moved here -->
+                        </div>
+                        <div class="input-card">
+                            <h3>Leave Travel Allowance (LTA)</h3>
+                            <div class="input-group">
+                                <label for="lta">LTA Amount</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="lta" name="lta" placeholder="Annual LTA">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 89(1) Relief -->
+                <section class="form-section hidden" id="reliefSection">
+                    <div class="section-header">
+                        <h2><i class="fas fa-hand-holding-heart"></i> Arrears & Relief</h2>
+                        <span class="helper-text">Enter details for Section 89(1) relief calculation</span>
+                    </div>
+
+                    <div class="card-grid">
+                        <div class="input-card">
+                            <h3>Arrears Details</h3>
+                            <div class="input-group">
+                                <label for="arrears">Arrears Amount</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    <input type="number" id="arrears" name="arrears" 
+                                           placeholder="Total arrears received">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="arrearsYear">Related Financial Year</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-calendar"></i>
+                                    <input type="number" 
+                                           id="arrearsYear" 
+                                           name="arrearsYear" 
+                                           placeholder="YYYY"
+                                           min="2000"
+                                           max="2099"
+                                           pattern="\d{4}"
+                                           title="Please enter a valid financial year (YYYY)"
+                                           onchange="validateArrearYear(this)">
+                                </div>
+                                <span class="helper-text">Enter the starting year of financial year (e.g., 2022 for FY 2022-23)</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Navigation Buttons -->
+                <div class="form-navigation">
+                    <button type="button" class="btn btn-secondary" id="prevBtn">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button type="button" class="btn btn-primary" id="nextBtn">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Results Section -->
+            <section class="results-section hidden" id="resultsSection">
+                <div class="results-header">
+                    <h2>Monthly Income Statement</h2>
+                    <button class="btn btn-outline" id="downloadBtn" onclick="downloadPDF()">
+                        <i class="fas fa-download"></i> Download PDF
+                    </button>
+                </div>
+                <div class="tax-breakdown">
+                    <!-- Monthly statement will be added here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Tooltips and Helpers -->
+    <div class="tooltip-container" id="tooltipContainer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="js/constants.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/validators.js"></script>
+    <script src="js/calculator.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html> 
